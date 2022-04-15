@@ -9,7 +9,7 @@ public class AdaptiveAlgorithm
 	public static void main(String args[])
 	{
 		System.out.println("Number of process: ");//how many process you have to enter
-		int num=20;
+		int num=200;
 		
 		Task B[]=new Task[num];
 
@@ -21,7 +21,7 @@ public class AdaptiveAlgorithm
 			B[i] = new Task( i,burstTime + (int)((Math.random() * (30 - 1)) + 1),burstTime,(int)((Math.random() * (5 - 1)) + 1),(int)((Math.random() * (50 - 1)) + 1));
 			//System.out.println("Burst time for "+B[i].pid+": "+B[i].bt+"\t"+"Arrival time: "+B[i].at);
 		}
-		Scheduler.schedule(Arrays.asList(B), B.length);
+
 		//get optimal schedule based on GA
 		GeneticAlgorithm genetic = new GeneticAlgorithm(B,20);
 		Task[] geneticSln = genetic.getSolution();
@@ -39,5 +39,6 @@ public class AdaptiveAlgorithm
 		}
 		
 		System.out.println("The average waiting time is: "+(total/num));
+		Scheduler.schedule(Arrays.asList(B), B.length);
 	}
 }
