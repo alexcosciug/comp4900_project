@@ -7,14 +7,16 @@ public class Task {
     public int bt; //burst time
     public int at; //arrival time
     public int tt; // turnaround time
-    public Task(int pid, int dt, int bt, int at)
+    public int pt; //period time
+    public Task(int pid, int dt, int bt, int at, int pt)
     {
         this.pid = pid;
         this.dt = dt;
         this.at = at;
         this.bt = bt;
-        int tt = -1;
-        int wt = -1;
+        this.pt = pt;
+        this.tt = -1;
+        this.wt = -1;
     }
     public int getWaitingTime(int totalTime){
         this.wt = getTurnaroundTime(totalTime) - this.bt;

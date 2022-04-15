@@ -1,12 +1,15 @@
 import genetic.GeneticAlgorithm;
 import model.Task;
+import edf.Scheduler;
+
+import java.util.Arrays;
 
 public class AdaptiveAlgorithm
 {
 	public static void main(String args[])
 	{
 		System.out.println("Number of process: ");//how many process you have to enter
-		int num=200;
+		int num=20;
 		
 		Task B[]=new Task[num];
 
@@ -15,10 +18,10 @@ public class AdaptiveAlgorithm
 		{
 			//Task(pid,dt,bt,at)
 			int burstTime = (int)((Math.random() * (30 - 10)) + 10);
-			B[i] = new Task( i,burstTime + (int)((Math.random() * (30 - 1)) + 1),burstTime,(int)((Math.random() * (5 - 1)) + 1));
-			System.out.println("Burst time for "+B[i].pid+": "+B[i].bt+"\t"+"Arrival time: "+B[i].at);
+			B[i] = new Task( i,burstTime + (int)((Math.random() * (30 - 1)) + 1),burstTime,(int)((Math.random() * (5 - 1)) + 1),(int)((Math.random() * (50 - 1)) + 1));
+			//System.out.println("Burst time for "+B[i].pid+": "+B[i].bt+"\t"+"Arrival time: "+B[i].at);
 		}
-
+		Scheduler.schedule(Arrays.asList(B));
 		//get optimal schedule based on GA
 		GeneticAlgorithm genetic = new GeneticAlgorithm(B,20);
 		Task[] geneticSln = genetic.getSolution();

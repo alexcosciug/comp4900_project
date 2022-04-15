@@ -1,11 +1,12 @@
 package genetic;
 import model.Task;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.lang.*;
+
+//implemented with reference to: https://github.com/memento/GeneticAlgorithm
 
 public class GeneticAlgorithm {
 
