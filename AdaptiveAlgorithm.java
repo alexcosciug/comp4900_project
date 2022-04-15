@@ -21,7 +21,7 @@ public class AdaptiveAlgorithm
 			B[i] = new Task( i,burstTime + (int)((Math.random() * (30 - 1)) + 1),burstTime,(int)((Math.random() * (5 - 1)) + 1),(int)((Math.random() * (50 - 1)) + 1));
 			//System.out.println("Burst time for "+B[i].pid+": "+B[i].bt+"\t"+"Arrival time: "+B[i].at);
 		}
-		Scheduler.schedule(Arrays.asList(B));
+		Scheduler.schedule(Arrays.asList(B), B.length);
 		//get optimal schedule based on GA
 		GeneticAlgorithm genetic = new GeneticAlgorithm(B,20);
 		Task[] geneticSln = genetic.getSolution();
