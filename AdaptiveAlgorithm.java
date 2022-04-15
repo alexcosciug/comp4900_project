@@ -34,7 +34,7 @@ public class AdaptiveAlgorithm
 		
 		for(int i=0;i<num;i++)
 		{
-			System.out.println("p"+(geneticSln[i].pid)+"\t"+geneticSln[i].dt+"\t"+geneticSln[i].wt);
+			//System.out.println("p"+(geneticSln[i].pid)+"\t"+geneticSln[i].dt+"\t"+geneticSln[i].wt);
 			total+=geneticSln[i].wt;
 		}
 		

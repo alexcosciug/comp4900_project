@@ -28,7 +28,7 @@ public class GeneticAlgorithm {
 	public Task[] getSolution(){
 
 		//Verbosity (e.g. Should we print genetic pool in the console?)
-		verbose = true;
+		verbose = false;
 		//Apply color to genes (if verbose = true) Note: this will slow down the process
 		coloredGenes = false;
 

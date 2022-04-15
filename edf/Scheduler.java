@@ -1,5 +1,5 @@
 package edf;
-
+import model.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,9 +7,9 @@ import java.util.Map;
 
 // coded with reference to https://github.com/elzoughby/EDF-scheduling
 
-class Scheduler {
+public class Scheduler {
 
-    static ScheduledTasks schedule(final List<Task> taskList, int N) {
+    public static ScheduledTasks schedule(final List<Task> taskList, int N) {
 
         int lcm = calcLCM(taskList);
         ScheduledTasks out = new ScheduledTasks();
@@ -22,13 +22,13 @@ class Scheduler {
 
             //add iterative tasks into the waiting list
             for(Task t : taskList)
-                if(timeUnit % t.getPeriod() == 0) {
+                if(timeUnit % t.pt == 0) {
 
-                    if(! waitingMap.containsKey(timeUnit + t.getPeriod()))
-                        waitingMap.put(timeUnit + t.getPeriod(), new ArrayList<>());
+                    if(! waitingMap.containsKey(timeUnit + t.pt))
+                        waitingMap.put(timeUnit + t.pt, new ArrayList<>());
 
-                    for(int i = 0; i < t.getET(); i++)
-                        waitingMap.get(timeUnit + t.getPeriod()).add(t);
+                    for(int i = 0; i < t.bt; i++)
+                        waitingMap.get(timeUnit + t.pt).add(t);
 
                     out.getDeadlinesList().get(timeUnit).add(t);
                 }
@@ -50,26 +50,29 @@ class Scheduler {
         for(Task task:out.getTaskList()){
             System.out.print(task + " ");
         }
-        System.out.print("Average wait time EDF: " + getAvgWaitingTime(taskList,N));
+        System.out.println("\n");
+        System.out.println("Average wait time EDF: " + getAvgWaitingTime(taskList,N));
         return out;
     }
 
 
-    static float getAvgWaitingTime(List<Task> taskList, int N){
+    public static float getAvgWaitingTime(List<Task> taskList, int N){
         int avg;
         int totalWT  = 0;
         int totalTime = 0;
-        for (int i = 0; i < taskList.length; i++) {
-            totalTime = totalTime + taskList[i].bt;
-            totalWT = totalWT + taskList[i].getWaitingTime(totalTime);
+        for (Task task:taskList) {
+            totalTime = totalTime + task.bt;
+            totalWT = totalWT + task.getWaitingTime(totalTime);
         }
-        this.fitness = totalWT/this.tasks.length;
+        avg= totalWT/N;
+        return avg;
     }
     static int calcLCM(List<Task> taskList) {
-        int lcm = taskList.get(0).getPeriod();
-        for(for int i; i<200,i++) {
+        int lcm = taskList.get(0).pt;
+        boolean flag = true;
+        for( int i =0 ; i<200;i++){
             for(Task x : taskList) {
-                if(lcm % x.getPeriod() != 0) {
+                if(lcm % x.pt != 0) {
                     flag = true;
                     break;
                 }
