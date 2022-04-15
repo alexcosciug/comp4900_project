@@ -9,7 +9,7 @@ import java.util.Map;
 
 class Scheduler {
 
-    static ScheduledTasks schedule(final List<Task> taskList) {
+    static ScheduledTasks schedule(final List<Task> taskList, int N) {
 
         int lcm = calcLCM(taskList);
         ScheduledTasks out = new ScheduledTasks();
@@ -47,15 +47,27 @@ class Scheduler {
 
         out.getDeadlinesList().remove(0);
         out.getDeadlinesList().add(new ArrayList<>());
-        System.out.println(out);
+        for(Task task:out.getTaskList()){
+            System.out.print(task + " ");
+        }
+        System.out.print("Average wait time EDF: " + getAvgWaitingTime(taskList,N));
         return out;
     }
 
 
+    static float getAvgWaitingTime(List<Task> taskList, int N){
+        int avg;
+        int totalWT  = 0;
+        int totalTime = 0;
+        for (int i = 0; i < taskList.length; i++) {
+            totalTime = totalTime + taskList[i].bt;
+            totalWT = totalWT + taskList[i].getWaitingTime(totalTime);
+        }
+        this.fitness = totalWT/this.tasks.length;
+    }
     static int calcLCM(List<Task> taskList) {
-
         int lcm = taskList.get(0).getPeriod();
-        for(boolean flag = true; flag; ) {
+        for(for int i; i<200,i++) {
             for(Task x : taskList) {
                 if(lcm % x.getPeriod() != 0) {
                     flag = true;
