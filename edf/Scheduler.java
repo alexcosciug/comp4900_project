@@ -1,60 +1,46 @@
 package edf;
 import model.Task;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-// coded with reference to https://github.com/elzoughby/EDF-scheduling
 
 public class Scheduler {
 
-    public static ScheduledTasks schedule(final List<Task> taskList, int N) {
+    public static Scheduled schedule(List<Task> tasks, int N) {
 
-        int lcm = calcLCM(taskList);
-        ScheduledTasks out = new ScheduledTasks();
-        Map<Integer, List<Task>> waitingMap = new HashMap<>();
+        Scheduled finalResult = new Scheduled();
+        List<Object> waiting = new ArrayList<Object>();
+        int lcm = calculateTheLCM(tasks);
 
+        for(int interval = 0;interval < lcm; interval++) {
+            finalResult.deadlines.add(interval, new ArrayList<>());
 
-        for(int timeUnit = 0; timeUnit < lcm; timeUnit++) {
+            for(Task t: tasks) {
+                if(interval % t.pt == 0) {
+                    if(!waiting.contains(interval + t.pt)){
+                        waiting.add(interval + t.pt, new ArrayList<>());
+                    }
 
-            out.getDeadlinesList().add(timeUnit, new ArrayList<>());
+                    for(int i = 0; i < t.bt; i++) {
+                        waiting.get(interval + t.pt);
+                    }
 
-            //add iterative tasks into the waiting list
-            for(Task t : taskList)
-                if(timeUnit % t.pt == 0) {
-
-                    if(! waitingMap.containsKey(timeUnit + t.pt))
-                        waitingMap.put(timeUnit + t.pt, new ArrayList<>());
-
-                    for(int i = 0; i < t.bt; i++)
-                        waitingMap.get(timeUnit + t.pt).add(t);
-
-                    out.getDeadlinesList().get(timeUnit).add(t);
+                    finalResult.deadlines.get(interval).add(t);
                 }
-
-            if(! waitingMap.isEmpty()) {
-                //the highest priority task has the minimum period
-                Integer minKey = waitingMap.keySet().stream().min(Integer::compareTo).get();
-                out.getTaskList().add(waitingMap.get(minKey).get(0));
-                waitingMap.get(minKey).remove(0);
-                if(waitingMap.get(minKey).isEmpty())
-                    waitingMap.remove(minKey);
-            } else
-                out.getTaskList().add(null);
-
+            }
         }
 
-        out.getDeadlinesList().remove(0);
-        out.getDeadlinesList().add(new ArrayList<>());
-        for(Task task:out.getTaskList()){
+        for(Task task: finalResult.tasks){
             System.out.print(task + " ");
         }
         System.out.println("\n");
-        System.out.println("Average wait time EDF: " + getAvgWaitingTime(taskList,N));
-        return out;
+        System.out.println("Average wait time EDF: " + getAvgWaitingTime(tasks,N));
+        return finalResult;
     }
 
+    public static class Scheduled {
+        List<Task> tasks = new ArrayList<>();
+        List<List<Task>> deadlines = new ArrayList<>();
+    }
 
     public static float getAvgWaitingTime(List<Task> taskList, int N){
         int avg;
@@ -67,36 +53,25 @@ public class Scheduler {
         avg= totalWT/N;
         return avg;
     }
-    static int calcLCM(List<Task> taskList) {
-        int lcm = taskList.get(0).pt;
+
+    // coded with reference to https://www.baeldung.com/java-least-common-multiple
+    // I had to consult online code examples and resources because I was unsure how to implement LCM calculation
+    // when the input was greater than two numbers
+    public static int calculateTheLCM(List<Task> tasks) {
         boolean flag = true;
-        for( int i =0 ; i<200;i++){
-            for(Task x : taskList) {
-                if(lcm % x.pt != 0) {
+        int lcm = tasks.get(0).pt;
+        for(int i =0 ; i<1000; i++){
+            for(Task t : tasks) {
+                if(lcm % t.pt != 0) {
                     flag = true;
                     break;
                 }
                 flag = false;
             }
-            lcm = flag? (lcm + 1) : lcm;
+            if(flag == true) {
+                lcm = lcm + 1;
+            }
         }
-
         return lcm;
     }
-
-
-    static class ScheduledTasks {
-
-        private List<Task> taskList = new ArrayList<>();
-        private List<List<Task>> deadlinesList = new ArrayList<>();
-
-        public List<Task> getTaskList() {
-            return taskList;
-        }
-
-        public List<List<Task>> getDeadlinesList() {
-            return deadlinesList;
-        }
-    }
-
 }
